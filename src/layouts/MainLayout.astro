@@ -1,0 +1,24 @@
+---
+interface Props {
+    title?: string;
+    description?: string;
+}
+
+const {
+    title = "Robin's Blog",
+    description = "Robin's Blog share anything about programing",
+} = Astro.props as Props;
+
+import Footer from "../components/Footer.astro";
+import MainNav from "../components/MainNav.astro";
+import MainHeader from "./MainHeader.astro";
+---
+
+<html lang="en">
+    <MainHeader {title} {description}/>
+    <body>
+        <MainNav/>
+        <slot>Default content</slot>
+        <Footer/>
+    </body>
+</html>
