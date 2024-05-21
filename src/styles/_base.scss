@@ -1,0 +1,40 @@
+// Reset All
+// ––––––––––––––––––––––––––––––––––––––––––––––––––
+
+*,
+*:after,
+*:before {
+  box-sizing: inherit;
+}
+
+:root {
+  font-size: $font-size-base;
+}
+
+html {
+  box-sizing: border-box;
+  font-size: $font-size-base;
+}
+
+body {
+  margin: 0;
+  color: $color-initial;
+  font-family: 'Roboto', 'Arial', sans-serif;
+  font-size: 1rem;
+  font-weight: 300;
+  letter-spacing: .01em;
+  line-height: 1.6;
+}
+
+a:link {
+  color: $color-primary;
+  text-decoration: none;
+}
+
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}

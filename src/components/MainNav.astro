@@ -12,14 +12,16 @@ const navData = [
 ---
 
 <nav aria-label="Primary">
-    <div class="logo">
-        <a href="/" aria-label="Home Page">Robin's Blog</a>
+    <div class="container">
+        <div class="logo">
+            <a href="/" aria-label="Home Page">Robin's Blog</a>
+        </div>
+        <ul class="navbar">
+            {
+                navData.map((el) => {
+                    return <li><a href={el.url} title={el.label}>{el.label}</a></li>;
+                })
+            }
+        </ul>
     </div>
-    <ul class="navbar">
-        {
-            navData.map((el) => {
-                return <li><a href={el.url} title={el.label}>{el.label}</a></li>;
-            })
-        }
-    </ul>
 </nav>

@@ -1,0 +1,11 @@
+@use "sass:list";
+@use "sass:map";
+
+@each $breakpoint, $screen-width in $grid-breakpoints {
+  $width: map.get($container-max-widths, $breakpoint);
+  @media (min-width: $screen-width) {
+    .container {
+      max-width: $width;
+    }
+  }
+}
