@@ -1,9 +1,31 @@
-// Import Modules
-// ––––––––––––––––––––––––––––––––––––––––––––––––––
+@import "lib/variables";
 
-@import "variables";
-@import "base";
-@import "breakpoints";
-@import "grid";
-@import "button";
-@import "form";
+body {
+  background: #eff3f4;
+}
+
+nav#navbar {
+  background: white;
+}
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: $color-initial;
+  ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    justify-content: space-around;
+    li a {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+    }
+  }
+}
+
+.blog-list {
+  display: flex;
+}

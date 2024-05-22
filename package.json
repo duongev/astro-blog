@@ -13,6 +13,8 @@
     "@astrojs/check": "^0.7.0",
     "@astrojs/node": "^8.2.5",
     "astro": "^4.8.4",
+    "firebase": "^10.12.1",
+    "firebase-admin": "^12.1.1",
     "typescript": "^5.4.5"
   },
   "devDependencies": {
