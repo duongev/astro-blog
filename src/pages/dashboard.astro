@@ -11,11 +11,16 @@ if (!Astro.cookies.has("__session")) {
 }
 const sessionCookie = Astro.cookies.get("__session").value;
 const decodedCookie = await auth.verifySessionCookie(sessionCookie);
+if (decodedCookie.uid !== "Ge4COqr0Lse9EBLcUtoUmtmXFFq2") {
+    return Astro.redirect("/");
+}
+
 const user = await auth.getUser(decodedCookie.uid);
 
 if (!user) {
     return Astro.redirect("/signin");
 }
+
 ---
 
 <MainLayout title="dashboard">

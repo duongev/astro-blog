@@ -5,8 +5,6 @@ import { getAuth } from "firebase-admin/auth";
 export const GET: APIRoute = async ({ request, cookies, redirect }) => {
     const auth = getAuth(app);
 
-    console.log("auth", auth)
-
     /* Get token from request headers */
     const idToken = request.headers.get("Authorization")?.split("Bearer ")[1];
     if (!idToken) {
@@ -26,17 +24,11 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
         );
     }
 
-    console.log("đến đây")
-
-    console.log('idToken', idToken)
-
     /* Create and set session cookie */
     const fiveDays = 60 * 60 * 24 * 5 * 1000;
     const sessionCookie = await auth.createSessionCookie(idToken, {
         expiresIn: fiveDays,
     });
-
-    console.log('sessionCookie', sessionCookie)
 
     cookies.set("__session", sessionCookie, {
         path: "/",

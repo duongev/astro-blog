@@ -17,4 +17,5 @@ const serviceAccount = {
 
 export const app = activeApps.length === 0 ? initializeApp({
     credential: cert(serviceAccount as ServiceAccount),
+    databaseURL: "https://blog-database-b66a1-default-rtdb.asia-southeast1.firebasedatabase.app"
 }) : activeApps[0];
