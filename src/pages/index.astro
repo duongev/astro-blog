@@ -1,14 +1,35 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
+import {app} from "../firebase/server";
+import {getFirestore} from "firebase-admin/firestore";
+
+interface Post {
+	id: string;
+	title: string;
+	content: string;
+	createAt: Date;
+}
+
+const db = getFirestore(app);
+const postsRef = db.collection("posts");
+const postsSnapshot = await postsRef.get();
+const posts = postsSnapshot.docs.map((doc) => ({
+	id: doc.id,
+	...doc.data(),
+})) as Post[];
 ---
 
 <MainLayout>
 	<div class="container">
 		<h1>This is Duong's blog</h1>
 		<div class="row">
-			<div class="col-md-4">
-				Xin chào các bạn
-			</div>
+			{
+				posts.map((post) => {
+					return <div class="col-md-4">
+						<a href={`/blog/${post.id}`} target="_blank">{post.title}</a>
+					</div>
+				})
+			}
 		</div>
 	</div>
 

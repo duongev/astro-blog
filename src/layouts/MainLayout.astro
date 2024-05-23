@@ -18,7 +18,9 @@ import MainHeader from "./MainHeader.astro";
     <MainHeader {title} {description}/>
     <body>
         <MainNav/>
-        <slot>Default content</slot>
+        <section id="main-layout">
+            <slot>Default content</slot>
+        </section>
         <Footer/>
     </body>
 </html>

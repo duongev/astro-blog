@@ -1,12 +1,37 @@
 ---
+import { getFirestore } from "firebase-admin/firestore";
+import MainLayout from "../../layouts/MainLayout.astro";
+import {app} from "../../firebase/server";
+
+interface Post {
+    title: string;
+    content: string;
+    createAt: Date;
+}
+
+
 const { id } = Astro.params;
 
-import MainLayout from "../../layouts/MainLayout.astro";
-const data = await fetch(`https://dummyjson.com/posts/${id}`)
-.then(res => res.json())
+
+if (!id) {
+    return Astro.redirect("/404");
+}
+
+const db = getFirestore(app);
+const postsRef = db.collection("posts");
+const postSnapshot = await postsRef.doc(id).get();
+
+if (!postSnapshot.exists) {
+    return Astro.redirect("/404");
+}
+
+const post = postSnapshot.data() as Post;
 ---
 
-<MainLayout>
-    <h1>{data.title}</h1>
-    <p>{data.body}</p>
+<MainLayout title={post.title}>
+    <div class="container">
+        <h1>{post.title}</h1>
+        <p>{post.content}</p>
+    </div>
+
 </MainLayout>

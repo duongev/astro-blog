@@ -1,0 +1,33 @@
+---
+import DashboardNav from "../components/DashboardNav.astro";
+interface Props {
+    title?: string;
+    description?: string;
+}
+
+const {
+    title = "Robin's Blog",
+    description = "Robin's Blog share anything about programing",
+} = Astro.props as Props;
+
+import Footer from "../components/Footer.astro";
+import "../styles/lib/lib.scss"
+import "../styles/dashboard.scss"
+---
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description}/>
+</head>
+<body>
+    <DashboardNav/>
+    <slot>Default content</slot>
+    <Footer/>
+</body>
+</html>

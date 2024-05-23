@@ -4,6 +4,10 @@ body {
   background: #eff3f4;
 }
 
+#main-layout {
+  min-height: 20rem;
+}
+
 nav#navbar {
   background: white;
 }
@@ -28,4 +32,11 @@ nav#navbar {
 
 .blog-list {
   display: flex;
+}
+
+footer#footer {
+  text-align: center;
+  background: #fff;
+  padding: 1rem;
+  margin-top: 2rem;
 }

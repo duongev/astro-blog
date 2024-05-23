@@ -1,0 +1,44 @@
+---
+import {app} from "../../firebase/server";
+import {getFirestore} from "firebase-admin/firestore";
+import DashboardLayout from "../../layouts/DashboardLayout.astro";
+
+interface Post {
+    id: string;
+    title: string;
+    content: string;
+    createAt: Date;
+}
+
+const db = getFirestore(app);
+const postsRef = db.collection("posts");
+const postsSnapshot = await postsRef.get();
+const posts = postsSnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+})) as Post[];
+---
+
+<DashboardLayout title="dashboard">
+    <div class="container">
+        <a href="dashboard/posts/add">
+            <button class="primary">Add Post</button>
+        </a>
+        <div class="content">
+            {
+                posts.length > 0 ?
+                        <ul class="list-posts">
+                            {
+                                posts.map((post) => (
+                                        <li>
+                                            <a href={`/blog/${post.id}`} target="_blank">{post.title}</a>
+                                            <a class="edit" href={`dashboard/posts/edit/${post.id}`}>Edit</a>
+                                        </li>
+                                ))
+                            }
+                        </ul> :
+                        <></>
+            }
+        </div>
+    </div>
+</DashboardLayout>
