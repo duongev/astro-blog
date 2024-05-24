@@ -2,12 +2,14 @@
 import MainLayout from "../layouts/MainLayout.astro";
 import {app} from "../firebase/server";
 import {getFirestore} from "firebase-admin/firestore";
+import {getDes} from "../helpers/helpers";
+import Timestamp from "firebase-admin";
 
 interface Post {
 	id: string;
 	title: string;
 	content: string;
-	createAt: Date;
+	createAt: Timestamp;
 }
 
 const db = getFirestore(app);
@@ -21,16 +23,21 @@ const posts = postsSnapshot.docs.map((doc) => ({
 
 <MainLayout>
 	<div class="container">
-		<h1>This is Duong's blog</h1>
-		<div class="row">
+	</div>
+	<div class="container">
+		<div class="row blog-list">
 			{
 				posts.map((post) => {
-					return <div class="col-md-4">
-						<a href={`/blog/${post.id}`} target="_blank">{post.title}</a>
-					</div>
+					return (
+						<div class="article-card">
+							<a href={`/blog/${post.id}`} target="_blank"><h2>{post.title}</h2></a>
+							<time>{post.createAt.toDate().toDateString()}</time>
+							<p set:html={getDes(post.content, 200)}></p>
+							<a href={`/blog/${post.id}`}>Read more</a>
+						</div>
+					)
 				})
 			}
 		</div>
 	</div>
-
 </MainLayout>

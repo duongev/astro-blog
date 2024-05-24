@@ -2,12 +2,13 @@
 import {app} from "../../firebase/server";
 import {getFirestore} from "firebase-admin/firestore";
 import DashboardLayout from "../../layouts/DashboardLayout.astro";
+import Timestamp from "firebase-admin";
 
 interface Post {
     id: string;
     title: string;
     content: string;
-    createAt: Date;
+    createAt: Timestamp;
 }
 
 const db = getFirestore(app);

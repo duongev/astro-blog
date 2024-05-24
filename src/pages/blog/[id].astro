@@ -2,11 +2,12 @@
 import { getFirestore } from "firebase-admin/firestore";
 import MainLayout from "../../layouts/MainLayout.astro";
 import {app} from "../../firebase/server";
+import Timestamp from "firebase-admin";
 
 interface Post {
     title: string;
     content: string;
-    createAt: Date;
+    createAt: Timestamp;
 }
 
 
@@ -31,7 +32,7 @@ const post = postSnapshot.data() as Post;
 <MainLayout title={post.title}>
     <div class="container">
         <h1>{post.title}</h1>
-        <p>{post.content}</p>
+        <p set:html={post.content}></p>
     </div>
 
 </MainLayout>

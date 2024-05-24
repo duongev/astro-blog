@@ -1,15 +1,20 @@
 @import "lib/variables";
 
 body {
-  background: #eff3f4;
+  background: #161616;
+  &#main {
+    position: relative;
+    min-height: 100vh;
+    padding-bottom: 5rem;
+  }
 }
 
 #main-layout {
-  min-height: 20rem;
+  margin-bottom: 2rem;
 }
 
 nav#navbar {
-  background: white;
+  background: #040404;
 }
 
 .main-nav {
@@ -17,6 +22,15 @@ nav#navbar {
   align-items: center;
   justify-content: space-between;
   color: $color-initial;
+
+  .logo {
+    display: flex;
+    align-items: center;
+
+    img {
+      max-width: 180px;
+    }
+  }
   ul {
     list-style: none;
     display: flex;
@@ -31,12 +45,58 @@ nav#navbar {
 }
 
 .blog-list {
-  display: flex;
+  font-size: 1.125rem;
+  margin-top: 4rem;
+
+  .article-card {
+    h2 {
+      margin: 0.5rem 0;
+    }
+
+    p {
+      margin: 0.25rem 0 0.5rem;
+    }
+  }
+}
+
+#about-me {
+  margin-top: 4rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  max-width: 50rem;
+
+  h1 {
+    color: $color-primary;
+    font-size: 6rem;
+    line-height: 1;
+    margin: 2rem 0 1rem;
+  }
+
+  img {
+    border-radius: 100%;
+    border: 0.325rem solid $color-primary;
+    margin: 0 0 1rem;
+  }
+}
+
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1080px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1080px;
+  }
 }
 
 footer#footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
   text-align: center;
-  background: #fff;
+  background: #040404;
   padding: 1rem;
-  margin-top: 2rem;
 }

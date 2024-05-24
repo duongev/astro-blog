@@ -4,18 +4,12 @@ const navData = [
         url: "/about",
         label: "About",
     },
-    {
-        url: "/contact",
-        label: "Contact",
-    },
 ];
 ---
 
 <nav id="navbar" aria-label="Primary">
     <div class="container main-nav">
-        <div class="logo">
-            <a href="/" aria-label="Home Page">Robin's Blog</a>
-        </div>
+        <a href="/" class="logo" aria-label="Home Page"><img src="/logo-transparent.png" alt=""></a>
         <ul>
             {
                 navData.map((el) => {
