@@ -1,5 +1,6 @@
 ---
 import DashboardLayout from "../../../layouts/DashboardLayout.astro";
+import RichTextEditor from "../../../components/RichTextEditor.vue"
 ---
 <!-- Include stylesheet -->
 <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
@@ -9,21 +10,10 @@ import DashboardLayout from "../../../layouts/DashboardLayout.astro";
         <form method="post" action="/api/posts">
             <label for="title">Title</label>
             <input type="text" id="title" name="title" />
-            <label for="content">Content</label>
-            <textarea id="content" name="content" />
+            <!--<label for="content">Content</label>-->
+            <!--<textarea id="content" name="content" />-->
+            <RichTextEditor client:only="vue"/>
             <button type="submit">Add post</button>
         </form>
     </div>
 </DashboardLayout>
-<!-- Include the Quill library -->
-<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
-
-<!-- Initialize Quill editor -->
-<script>
-    document.addEventListener("DOMContentLoaded", function(event) {
-        const quill = new Quill('#content', {
-            theme: 'snow',
-            toolbar: 'full'
-        });
-    });
-</script>
