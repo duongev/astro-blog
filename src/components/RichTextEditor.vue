@@ -5,32 +5,25 @@ import '@vueup/vue-quill/dist/vue-quill.snow.css'
 // @ts-ignore-next-line
 import ImageUploader from 'quill-image-uploader'
 import htmlEditButton from "quill-html-edit-button";
+import axios from "axios";
 
 
 const modules = [{
   name: 'imageUploader',
   module: ImageUploader,
-  // options: {
-  //   upload: (file: any) => {
-  //     return new Promise((resolve, reject) => {
-  //       const formData = new FormData()
-  //       formData.append('file', file)
-  //       request({
-  //         method: 'POST',
-  //         url: 'media/upload',
-  //         data: formData
-  //       })
-  //           .then((res: any) => {
-  //             resolve(apiUrl + res.url)
-  //           })
-  //           .catch((err) => {
-  //             console.log('err', err)
-  //             reject('Upload failed')
-  //             message.error('Upload failed')
-  //           })
-  //     })
-  //   }
-  // }
+  options: {
+    upload: (file: any) => {
+      return new Promise((resolve, reject) => {
+        const formData = new FormData()
+        formData.append('file', file)
+        axios({
+          method: 'POST',
+          url: '/api/posts/image',
+          data: formData
+        })
+      })
+    }
+  }
 }, {
   name: 'htmlEditButton',
   module: htmlEditButton,
@@ -66,7 +59,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <button class="mb-2" @click="quillImageCallback" style="margin: 1rem 0">Thêm media</button>
+  <button type="button" class="mb-2" @click="quillImageCallback" style="margin: 1rem 0">Thêm media</button>
   <input type="hidden" id="content" name="content" :value="pageData.content"/>
   <QuillEditor
       ref="quillEditor"
