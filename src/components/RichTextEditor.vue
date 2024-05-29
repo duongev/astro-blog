@@ -1,26 +1,55 @@
 <script setup lang="ts">
-import { createVNode, onMounted, ref } from 'vue'
-import { QuillEditor } from '@vueup/vue-quill'
+import {onMounted, ref} from 'vue'
+import {QuillEditor} from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
 // @ts-ignore-next-line
 import ImageUploader from 'quill-image-uploader'
 import htmlEditButton from "quill-html-edit-button";
-import axios from "axios";
+import {getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup} from "firebase/auth";
+import {app} from "../firebase/client.ts";
+import * as fireRef from "firebase/storage";
+import {getDownloadURL, getStorage, uploadBytes} from "firebase/storage";
 
+const auth = getAuth(app);
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    // User is signed in, see docs for a list of available properties
+    // https://firebase.google.com/docs/reference/js/auth.user
+    const uid = user.uid;
+    // ...
+    console.log('uid', uid);
+  } else {
+    // User is signed out
+    // ...
+    console.log('log out')
+  }
+});
+
+const signIn = () => {
+  const provider = new GoogleAuthProvider();
+  signInWithPopup(auth, provider)
+}
 
 const modules = [{
   name: 'imageUploader',
   module: ImageUploader,
   options: {
     upload: (file: any) => {
-      return new Promise((resolve, reject) => {
-        const formData = new FormData()
-        formData.append('file', file)
-        axios({
-          method: 'POST',
-          url: '/api/posts/image',
-          data: formData
-        })
+      return new Promise(async (resolve, reject) => {
+        const storage = getStorage(app);
+
+        // Create a storage reference from our storage service
+        const storageRef = fireRef.ref(storage, `images/${Date.now()}_${file.name}`);
+        // 'file' comes from the Blob or File API
+        try {
+          const url = await uploadBytes(storageRef, file).then((snapshot) => {
+            return getDownloadURL(fireRef.ref(storage, snapshot.metadata.fullPath))
+          });
+          resolve(url);
+        } catch (e) {
+          reject('Upload failed')
+        }
+        return
       })
     }
   }
@@ -59,7 +88,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <button type="button" class="mb-2" @click="quillImageCallback" style="margin: 1rem 0">Thêm media</button>
+  <button type="button" class="mb-2" @click="signIn" style="margin: 1rem 0">Thêm media</button>
   <input type="hidden" id="content" name="content" :value="pageData.content"/>
   <QuillEditor
       ref="quillEditor"
