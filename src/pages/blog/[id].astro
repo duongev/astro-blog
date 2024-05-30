@@ -9,9 +9,7 @@ interface Post {
     createAt: any;
 }
 
-
 const { id } = Astro.params;
-
 
 if (!id) {
     return Astro.redirect("/404");
