@@ -34,5 +34,23 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
         path: "/",
     });
 
+    const decodedCookie = await auth.verifySessionCookie(sessionCookie);
+
+    const token = await getAuth()
+        .createCustomToken(decodedCookie.uid)
+        .then((customToken) => {
+            // Send token back to client
+            return customToken
+        })
+        .catch((error) => {
+            console.log('Error creating custom token:', error);
+        });
+
+    if (token) {
+        cookies.set("__token", token, {
+            path: "/",
+        });
+    }
+
     return redirect("/dashboard");
 };

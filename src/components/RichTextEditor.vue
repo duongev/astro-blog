@@ -5,30 +5,23 @@ import '@vueup/vue-quill/dist/vue-quill.snow.css'
 // @ts-ignore-next-line
 import ImageUploader from 'quill-image-uploader'
 import htmlEditButton from "quill-html-edit-button";
-import {getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup} from "firebase/auth";
+import {getAuth, onAuthStateChanged, signInWithCustomToken, signInWithPopup} from "firebase/auth";
 import {app} from "../firebase/client.ts";
 import * as fireRef from "firebase/storage";
 import {getDownloadURL, getStorage, uploadBytes} from "firebase/storage";
 
 const auth = getAuth(app);
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    // User is signed in, see docs for a list of available properties
-    // https://firebase.google.com/docs/reference/js/auth.user
-    const uid = user.uid;
-    // ...
-    console.log('uid', uid);
-  } else {
-    // User is signed out
-    // ...
-    console.log('log out')
-  }
-});
+const storage = getStorage(app);
 
-const signIn = () => {
-  const provider = new GoogleAuthProvider();
-  signInWithPopup(auth, provider)
-}
+const props = defineProps({
+  post: {
+    title: String,
+    content: String,
+    createAt: Date
+  }
+})
+
+const pageData = ref<any>(props.post)
 
 const modules = [{
   name: 'imageUploader',
@@ -36,8 +29,6 @@ const modules = [{
   options: {
     upload: (file: any) => {
       return new Promise(async (resolve, reject) => {
-        const storage = getStorage(app);
-
         // Create a storage reference from our storage service
         const storageRef = fireRef.ref(storage, `images/${Date.now()}_${file.name}`);
         // 'file' comes from the Blob or File API
@@ -49,7 +40,6 @@ const modules = [{
         } catch (e) {
           reject('Upload failed')
         }
-        return
       })
     }
   }
@@ -60,35 +50,39 @@ const modules = [{
 
 const quillEditor = ref(null)
 
-const quillImageCallback = async () => {
-  // const quillObj = quillEditor.value.getQuill()
-  // quillObj.focus()
-  // const range = quillObj.getSelection()
-  // quillObj.insertEmbed(
-  //   range.index,
-  //   'image',
-  //   'https://cdn.sforum.vn/sforum/wp-content/uploads/2022/12/demo-la-gi-0.jpg'
-  // )
+const quillImageCallback = async (file:any) => {
+  const quillUpload = document.getElementsByClassName("ql-image")[0];
+  quillUpload?.click();
 }
 
-const pageData = ref<any>({content:""})
-
-const currentId = ref<number>()
+function getCookie(name: string) {
+  const nameEQ = name + "=";
+  const ca = document.cookie.split(";");
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == " ") c = c.substring(1, c.length);
+    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+  }
+  return null;
+}
 
 onMounted(() => {
-  // const id = route.params.id
-  // currentId.value = +id
-  // request({
-  //   method: 'GET',
-  //   url: `/posts/byId/${id}`
-  // }).then((res) => {
-  //   pageData.value = res
-  // })
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // User is signed in, see docs for a list of available properties
+      // https://firebase.google.com/docs/reference/js/auth.user
+      console.log('logged')
+    } else {
+      // User is signed out
+      signInWithCustomToken(auth, getCookie("__token") || "")
+    }
+  });
+
 })
 </script>
 
 <template>
-  <button type="button" class="mb-2" @click="signIn" style="margin: 1rem 0">Thêm media</button>
+  <button type="button" class="mb-2" @click="quillImageCallback" style="margin: 1rem 0">Add media</button>
   <input type="hidden" id="content" name="content" :value="pageData.content"/>
   <QuillEditor
       ref="quillEditor"
