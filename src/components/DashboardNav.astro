@@ -21,8 +21,9 @@ if (!user) {
 
 <header class="dashboard-header">
     <nav class="container">
-        <h1>Welcome {user.displayName}</h1>
+        <a href="/" class="logo" aria-label="Home Page"><img src="/logo-transparent.png" alt=""></a>
         <form action="/api/auth/signout">
+            <h4>Welcome, {user.displayName}</h4>
             <button type="submit">Sign out</button>
         </form>
     </nav>

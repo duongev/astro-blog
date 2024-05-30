@@ -21,7 +21,7 @@ const props = defineProps({
   }
 })
 
-const pageData = ref<any>(props.post)
+const pageData = ref<any>(props.post || {content: ""})
 
 const modules = [{
   name: 'imageUploader',
