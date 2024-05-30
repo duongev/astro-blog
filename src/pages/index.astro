@@ -9,7 +9,7 @@ interface Post {
 	id: string;
 	title: string;
 	content: string;
-	createAt: Timestamp;
+	createAt: typeof Timestamp;
 }
 
 const db = getFirestore(app);

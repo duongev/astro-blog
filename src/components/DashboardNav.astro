@@ -6,7 +6,7 @@ const auth = getAuth(app);
 if (!Astro.cookies.has("__session")) {
     return Astro.redirect("/signin");
 }
-const sessionCookie = Astro.cookies.get("__session").value;
+const sessionCookie = Astro.cookies.get("__session")?.value || "";
 const decodedCookie = await auth.verifySessionCookie(sessionCookie);
 if (decodedCookie.uid !== "Ge4COqr0Lse9EBLcUtoUmtmXFFq2") {
     return Astro.redirect("/");
