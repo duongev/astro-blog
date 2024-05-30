@@ -1,13 +1,20 @@
 import { defineConfig } from 'astro/config';
-
-import node from "@astrojs/node";
 import vue from '@astrojs/vue';
+
+import vercel from "@astrojs/vercel/serverless";
 
 // https://astro.build/config
 export default defineConfig({
   output: "server",
-  adapter: node({
-    mode: "standalone"
+  adapter: vercel({
+    edgeMiddleware: true,
+    isr: true,
+    webAnalytics: {
+      enabled: true,
+    },
+    maxDuration: 8,
   }),
-  integrations: [vue({ jsx: true })],
+  integrations: [vue({
+    jsx: true
+  })]
 });
