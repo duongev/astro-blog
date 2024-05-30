@@ -3,13 +3,12 @@ import MainLayout from "../layouts/MainLayout.astro";
 import {app} from "../firebase/server";
 import {getFirestore} from "firebase-admin/firestore";
 import {getDes} from "../helpers/helpers";
-import Timestamp from "firebase-admin";
 
 interface Post {
 	id: string;
 	title: string;
 	content: string;
-	createAt: typeof Timestamp;
+	createAt: any;
 }
 
 const db = getFirestore(app);

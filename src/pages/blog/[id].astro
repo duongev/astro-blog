@@ -2,12 +2,11 @@
 import { getFirestore } from "firebase-admin/firestore";
 import MainLayout from "../../layouts/MainLayout.astro";
 import {app} from "../../firebase/server";
-import Timestamp from "firebase-admin";
 
 interface Post {
     title: string;
     content: string;
-    createAt: typeof Timestamp;
+    createAt: any;
 }
 
 
