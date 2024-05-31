@@ -1,5 +1,25 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
+import { Code } from 'astro:components';
+function decodeEntities(encodedString) {
+	const translate_re = /&(nbsp|amp|quot|lt|gt);/g;
+	const translate = {
+		"nbsp":" ",
+		"amp" : "&",
+		"quot": "\"",
+		"lt"  : "<",
+		"gt"  : ">"
+	};
+	return encodedString.replace(translate_re, function(match, entity) {
+		return translate[entity];
+	}).replace(/&#(\d+);/gi, function(match, numStr) {
+		var num = parseInt(numStr, 10);
+		return String.fromCharCode(num);
+	});
+}
+
+const value = decodeEntities(`import vercelStatic from "@astrojs/vercel/static";&lt;h1&gt;Xin chào các bạn&lt;/h1&gt;`);
+
 ---
 
 <MainLayout>
@@ -8,5 +28,7 @@ import MainLayout from "../layouts/MainLayout.astro";
 		<h1>Who Am I?</h1>
 		<img src="/about-me.jpg" alt="">
 		<p>Hi, I'm Duong, a dedicated professional in the IT software industry with a comprehensive skill set in both backend and frontend development. My passion for coding is matched only by my love for books, constantly seeking to expand my knowledge and expertise.</p>
+
+		<Code style="text-align: left" code={value} lang="ts" wrap/>
 	</div>
 </MainLayout>
