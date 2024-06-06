@@ -26,31 +26,38 @@ if (!postSnapshot.exists) {
 
 const post = postSnapshot.data() as Post;
 
-function decodeEntities(encodedString) {
-    const translate_re = /&(nbsp|amp|quot|lt|gt);/g;
-    const translate = {
-        "nbsp":" ",
-        "amp" : "&",
-        "quot": "\"",
-        "lt"  : "<",
-        "gt"  : ">"
-    };
-    return encodedString.replace(translate_re, function(match, entity) {
-        return translate[entity];
-    }).replace(/&#(\d+);/gi, function(match, numStr) {
-        const num = parseInt(numStr, 10);
-        return String.fromCharCode(num);
-    });
-}
+const splitString = "|\|\|\|"
+const arrCode: { value: string; lang: string }[] = [];
 
-const searchRegex = new RegExp(/<pre class="ql-syntax" spellcheck="false">([^<]*)<\/pre>/ , 'ig');
+const searchRegex = new RegExp(/\[code(.*?)](.*?)\[\/code]/, 'ig');
+const filterContent = post.content.replace(searchRegex, function (string) {
+    const lang = string.match(/(^(?!.*lang=")|(?<=lang=")).*?((?=")|$)/);
+    const value = string.match(/\[code [^>]+](.*?)\[\/code]/);
+    arrCode.push({
+        value: value[1].slice(4).slice(0, -3),
+        lang: lang[0]
+    })
 
+    return splitString;
+}).replaceAll(`<p>${splitString}</p>`, splitString);
+
+const newContent = filterContent.split(splitString);
 ---
 
 <MainLayout title={post.title}>
     <div class="container">
         <h1>{post.title}</h1>
-        <Code code={post.content} wrap/>
+        {
+            newContent.map((el, index) => {
+                return (
+                        <>
+                            <Fragment set:html={el} />
+                            {arrCode[index] ? <Code code={arrCode[index].value} lang={arrCode[index].lang} wrap/> : null}
+                        </>
+                )
+            })
+        }
+
     </div>
 
 </MainLayout>
