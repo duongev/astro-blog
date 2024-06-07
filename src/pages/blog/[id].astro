@@ -52,7 +52,7 @@ const newContent = filterContent.split(splitString);
                 return (
                         <>
                             <Fragment set:html={el} />
-                            {arrCode[index] && arrCode[index].value && arrCode[index].lang ? <Code code={arrCode[index].value} lang={arrCode[index].lang} wrap/> : null}
+                            {arrCode[index] ? <Code code={arrCode[index].value || "" } lang={arrCode[index].lang || 'ts'} wrap/> : null}
                         </>
                 )
             })
