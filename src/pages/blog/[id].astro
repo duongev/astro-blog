@@ -29,12 +29,19 @@ const post = postSnapshot.data() as Post;
 const splitString = "|\|\|\|"
 const arrCode: { value: string; lang: any }[] = [];
 
+function removeTags(content: string) {
+    const regexTags = new RegExp(/<p>(.*?)(<\/p>)/, 'ig');
+    return content.replace(regexTags, function (_string, value: string) {
+        return value.replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&nbsp;', '  ') + '\n'
+    })
+}
+
 const searchRegex = new RegExp(/\[code(.*?)](.*?)\[\/code]/, 'ig');
 const filterContent = post.content.replace(searchRegex, function (string) {
     const lang = string.match(/(^(?!.*lang=")|(?<=lang=")).*?((?=")|$)/);
     const value = string.match(/\[code [^>]+](.*?)\[\/code]/);
     arrCode.push({
-        value: value ? value[1]?.slice(4).slice(0, -3) : '',
+        value: value ? removeTags(value[1]?.slice(4).slice(0, -3)) : '',
         lang: lang ? lang[0] : 'ts'
     })
 
@@ -50,10 +57,10 @@ const newContent = filterContent.split(splitString);
         {
             newContent.map((el, index) => {
                 return (
-                        <>
-                            <Fragment set:html={el} />
-                            {arrCode[index] ? <Code code={arrCode[index].value || "" } lang={arrCode[index].lang || 'ts'} wrap/> : null}
-                        </>
+                    <>
+                        <Fragment set:html={el} />
+                        {arrCode[index] ? <Code theme="dark-plus" style="padding: 0.25rem 1rem" code={arrCode[index].value || "" } lang={arrCode[index].lang || 'ts'} wrap/> : null}
+                    </>
                 )
             })
         }

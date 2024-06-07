@@ -10,5 +10,6 @@ export function getDes(content: string, count: number = 150) {
             description = addDes;
         }
     }
-    return description + "...";
+
+    return description.replace(new RegExp(/<p>/, 'ig'), '').replace(new RegExp(/<\/p>/, 'ig'), '') + "...";
 }
