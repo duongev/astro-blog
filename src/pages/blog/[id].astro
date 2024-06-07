@@ -34,8 +34,8 @@ const filterContent = post.content.replace(searchRegex, function (string) {
     const lang = string.match(/(^(?!.*lang=")|(?<=lang=")).*?((?=")|$)/);
     const value = string.match(/\[code [^>]+](.*?)\[\/code]/);
     arrCode.push({
-        value: value ? value[1]?.slice(4).slice(0, -3) : undefined,
-        lang: lang ? lang[0] : undefined
+        value: value ? value[1]?.slice(4).slice(0, -3) : '',
+        lang: lang ? lang[0] : 'ts'
     })
 
     return splitString;
